@@ -10,7 +10,7 @@ import (
 	"ref_system/internal/models"
 )
 
-func MigrationsUp(logger *slog.Logger) error {
+func Up(logger *slog.Logger) error {
 
 	err := godotenv.Load(".env.local")
 	if err != nil {
@@ -37,6 +37,7 @@ func MigrationsUp(logger *slog.Logger) error {
 		return fmt.Errorf("failed initialising migrations: %w", err)
 	}
 
+	return nil
 }
 
 func initMigrations(db *gorm.DB) error {
