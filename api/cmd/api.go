@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github.com/gin-gonic/gin"
 	"log/slog"
 	"os"
 	"ref_system/internal/config"
@@ -11,6 +12,7 @@ import (
 )
 
 func main() {
+	gin.SetMode(gin.DebugMode)
 	logger := loggerInit()
 
 	logger.Info("Configuration initialization has started")
