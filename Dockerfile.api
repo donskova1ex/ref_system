@@ -1,0 +1,21 @@
+FROM golang:alpine3.19 AS builder
+
+RUN apk update && apk add --no-cache git
+
+WORKDIR /app
+
+COPY *.mod *.sum ./
+RUN go mod download
+
+COPY . .
+RUN rm -f ref_system_api
+
+ENV CGO_ENABLED=0
+RUN go build -a -o ref_system_api ./cmd/api/ref_system_api.go
+
+FROM alpine:latest
+
+RUN apk update && apk add --no-cache bash
+WORKDIR /app
+COPY --from=builder /app/ref_system_api /app/ref_system_api
+CMD ["./ref_system_api"]

@@ -20,7 +20,7 @@ func New() (*Config, error) {
 	}
 	config := &Config{
 		PGdb: &PGConfig{
-			DSN: os.Getenv("DB_DSN"),
+			DSN: os.Getenv("POSTGRES_DSN"),
 		},
 	}
 	return config, nil
