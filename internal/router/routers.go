@@ -32,6 +32,19 @@ func (b *Builder) UserRouters() {
 	}
 }
 
+func (b *Builder) ReferralCodeBuilder() {
+	referralCodeRepo := repository.NewReferralCodeRepository(b.repository)
+	referralCodeHandler := handlers.NewReferralCodeHandler(referralCodeRepo)
+	api := b.engine.Group("/api/v1")
+	{
+		api.GET("/referral-codes", nil)
+		api.POST("/referral-codes", nil)
+		api.GET("/referral-codes/:code", nil)
+		api.GET("/referral-codes/user/:uuid", nil)
+
+	}
+}
+
 func (b *Builder) GetEngine() *gin.Engine {
 	return b.engine
 }

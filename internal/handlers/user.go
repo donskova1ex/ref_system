@@ -73,13 +73,21 @@ func (u *UserHandler) GetByUUID(c *gin.Context) {
 	}
 	c.JSON(http.StatusOK, user)
 }
+
+// TODO: проверить как работает
 func (u *UserHandler) GetAllUsers(c *gin.Context) {
 	users, err := u.UserRepository.GetAll()
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
-	}
-	if len(users) == 0 {
-		c.JSON(http.StatusNotFound, gin.H{"message": "users not found"})
+		switch errors.Is(err, internal.ErrRecordNoFound) {
+		case true:
+			apiErr := HandleError(http.StatusNotFound, "users not found", err)
+			c.AbortWithStatusJSON(apiErr.Status, apiErr)
+			return
+		default:
+			apiErr := HandleError(http.StatusInternalServerError, "failed to get users", err)
+			c.AbortWithStatusJSON(apiErr.Status, apiErr)
+			return
+		}
 	}
 
 	c.JSON(http.StatusOK, users)

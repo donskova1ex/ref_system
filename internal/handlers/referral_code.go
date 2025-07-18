@@ -1,6 +1,9 @@
 package handlers
 
-import "ref_system/internal/repository"
+import (
+	"github.com/gin-gonic/gin"
+	"ref_system/internal/repository"
+)
 
 type ReferralCodeHandler struct {
 	ReferralCodeRepository *repository.ReferralCodeRepository
@@ -10,4 +13,9 @@ func NewReferralCodeHandler(repo *repository.ReferralCodeRepository) *ReferralCo
 	return &ReferralCodeHandler{
 		ReferralCodeRepository: repo,
 	}
+}
+
+func (r *ReferralCodeHandler) GetAllReferralCodes(c *gin.Context) {
+	codes, err := r.ReferralCodeRepository.GetAll()
+
 }
