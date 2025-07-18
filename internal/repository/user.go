@@ -38,8 +38,8 @@ func (u *UserRepository) GetAll() ([]*domain.User, error) {
 	}
 	return users, nil
 }
-func (u *UserRepository) GetByUUID(uuid *uuid.UUID) (*models.User, error) {
-	var user *models.User
+func (u *UserRepository) GetByUUID(uuid *uuid.UUID) (*domain.User, error) {
+	var user *domain.User
 	result := u.repository.db.Table("users").Where("uuid = ?", uuid).First(&user)
 	if result.Error != nil {
 		if errors.Is(result.Error, gorm.ErrRecordNotFound) {

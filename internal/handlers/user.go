@@ -25,7 +25,6 @@ func (u *UserHandler) Create(c *gin.Context) {
 	domainUser := &domain.User{}
 	if err := c.ShouldBindJSON(domainUser); err != nil {
 		apiErr := HandleError(http.StatusBadRequest, "invalid body", err)
-		//c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		c.AbortWithStatusJSON(apiErr.Status, apiErr)
 		return
 	}
@@ -36,7 +35,6 @@ func (u *UserHandler) Create(c *gin.Context) {
 	createdUser, err := u.UserRepository.Create(user)
 	if err != nil {
 		apiErr := HandleError(http.StatusInternalServerError, "failed to create user", err)
-		//c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		c.AbortWithStatusJSON(apiErr.Status, apiErr)
 		return
 	}
@@ -48,7 +46,6 @@ func (u *UserHandler) GetByUUID(c *gin.Context) {
 	if uuidStr == "" {
 		apiErr := HandleError(http.StatusBadRequest, "uuid required", nil)
 		c.AbortWithStatusJSON(apiErr.Status, apiErr)
-		//c.JSON(http.StatusBadRequest, gin.H{"message": "uuid required"})
 		return
 	}
 
