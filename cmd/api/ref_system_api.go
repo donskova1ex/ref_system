@@ -39,8 +39,8 @@ func main() {
 	routerBuilder := router.InitBuilder(repo)
 	routerBuilder.UserRouters()
 
-	logger.Info("The server has started up at :8081")
-	if err := routerBuilder.GetEngine().Run(":8081"); err != nil {
+	logger.Info("The server has started up at :8080")
+	if err := routerBuilder.GetEngine().Run(":8080"); err != nil {
 		logger.Error("failed to start the server", slog.String("error", err.Error()))
 		os.Exit(1)
 	}

@@ -5,6 +5,7 @@ import (
 	"github.com/google/uuid"
 	"gorm.io/gorm"
 	"ref_system/internal"
+	"ref_system/internal/domain"
 	"ref_system/internal/models"
 )
 
@@ -18,15 +19,19 @@ func NewUserRepository(repo *Repository) *UserRepository {
 	}
 }
 
-func (u *UserRepository) Create(user *models.User) (*models.User, error) {
-	result := u.repository.db.Table("users").Create(user)
+func (u *UserRepository) Create(user *models.User) (*domain.User, error) {
+	newUser := &domain.User{
+		UUID: user.UUID,
+	}
+	result := u.repository.db.Table("users").Create(newUser)
 	if result.Error != nil {
 		return nil, result.Error
 	}
-	return user, nil
+
+	return newUser, nil
 }
-func (u *UserRepository) GetAll() ([]*models.User, error) {
-	var users []*models.User
+func (u *UserRepository) GetAll() ([]*domain.User, error) {
+	var users []*domain.User
 	result := u.repository.db.Table("users").Find(&users)
 	if result.Error != nil {
 		return nil, result.Error

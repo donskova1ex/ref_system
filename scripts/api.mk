@@ -8,7 +8,7 @@ clean_api:
 	rm -rf bin/ref_system
 
 api_docker_build:
-	docker build --no-cache -t ${API_CONTAINER_NAME}:${API_VERSION} -t ${API_CONTAINER_NAME}:latest -f Dockerfile.api .
+	docker build --no-cache -t ${API_CONTAINER_NAME}:${API_VERSION} -t ${API_CONTAINER_NAME}:latest -f dockerfile.api .
 
 api_local_run:
 	go run ./cmd/api/ref_system_api.go

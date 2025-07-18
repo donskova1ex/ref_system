@@ -32,7 +32,7 @@ services:
     container_name: ref_system.api
     build:
       context: .
-      dockerfile: Dockerfile.api
+      dockerfile: dockerfile.api
     image: donskova1ex/api:latest
     ports:
       - 8080:${API_PORT}
