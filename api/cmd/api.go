@@ -1,17 +1,17 @@
 package main
 
 import (
-	"github.com/gin-gonic/gin"
 	"log/slog"
 	"os"
 	"ref_system/internal/config"
+	"ref_system/internal/repository"
+	"ref_system/internal/router"
 	"ref_system/migrations"
+	"ref_system/pkg/db"
 )
 
 func main() {
-	loggerHandler := slog.NewJSONHandler(os.Stdout, nil)
-	logger := slog.New(loggerHandler)
-	slog.SetDefault(logger)
+	logger := loggerInit()
 
 	logger.Info("Configuration initialization has started")
 	cfg, err := config.New()
@@ -27,16 +27,28 @@ func main() {
 	}
 	logger.Info("Database migration has finished")
 
-	logger.Info("The server has started up")
-	router := gin.Default()
-	router.GET("/ping", func(c *gin.Context) {
-		c.JSON(200, gin.H{
-			"message": "pong",
-		})
-	})
-	err = router.Run(":8080")
+	pgDb, err := db.InitDB(cfg)
 	if err != nil {
-		logger.Error("failed to start server", slog.String("error", err.Error()))
+		logger.Error("failed to initialize database", slog.String("error", err.Error()))
+		os.Exit(1)
 	}
+
+	repo := repository.InitRepository(pgDb)
+	routerBuilder := router.InitBuilder(repo)
+	routerBuilder.UserRouters()
+
+	logger.Info("The server has started up at :8081")
+	if err := routerBuilder.GetEngine().Run(":8081"); err != nil {
+		logger.Error("failed to start the server", slog.String("error", err.Error()))
+		os.Exit(1)
+	}
+
 	logger.Info("The server is running successfully")
+}
+
+func loggerInit() *slog.Logger {
+	loggerHandler := slog.NewJSONHandler(os.Stdout, nil)
+	logger := slog.New(loggerHandler)
+	slog.SetDefault(logger)
+	return logger
 }

@@ -7,5 +7,5 @@ import (
 
 type User struct {
 	gorm.Model
-	UUID uuid.UUID `gorm:"type:uuid;default:uuid_generate_v4();uniqueIndex" validate:"omitempty,uuid4"`
+	UUID *uuid.UUID `gorm:"type:uuid;default:uuid_generate_v4();uniqueIndex" validate:"omitempty,uuid4"`
 }
