@@ -31,7 +31,6 @@ func (u *UserRepository) Create(user *models.User) (*domain.User, error) {
 	return newUser, nil
 }
 
-// TODO: проверить что возвращает
 func (u *UserRepository) GetAll() ([]*domain.User, error) {
 	var users []*domain.User
 	result := u.repository.db.Table("users").Find(&users)

@@ -21,7 +21,7 @@ func InitBuilder(repo *repository.Repository) *Builder {
 	}
 }
 
-func (b *Builder) UserRouters() {
+func (b *Builder) UserRoutersBuilder() {
 	userRepo := repository.NewUserRepository(b.repository)
 	userHandler := handlers.NewUserHandler(userRepo)
 
@@ -36,12 +36,14 @@ func (b *Builder) UserRouters() {
 func (b *Builder) ReferralCodeBuilder() {
 	referralCodeRepo := repository.NewReferralCodeRepository(b.repository)
 	referralCodeHandler := handlers.NewReferralCodeHandler(referralCodeRepo)
+
 	api := b.engine.Group("/api/v1")
 	{
-		api.GET("/referral-codes", nil)
-		api.POST("/referral-codes", nil)
-		api.GET("/referral-codes/:code", nil)
-		api.GET("/referral-codes/user/:uuid", nil)
+		api.GET("/referral-codes", referralCodeHandler.GetAllReferralCodes)
+		api.POST("/referral-codes", referralCodeHandler.Create)
+		api.GET("/referral-codes/:code", referralCodeHandler.GetByCode)
+		api.GET("/referral-codes/users/:uuid", referralCodeHandler.GetByUserUUID)
+		api.POST("/referral-codes/users", referralCodeHandler.CreateNewCodeAndNewUser)
 
 	}
 }

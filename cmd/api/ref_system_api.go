@@ -37,7 +37,8 @@ func main() {
 
 	repo := repository.InitRepository(pgDb)
 	routerBuilder := router.InitBuilder(repo)
-	routerBuilder.UserRouters()
+	routerBuilder.UserRoutersBuilder()
+	routerBuilder.ReferralCodeBuilder()
 
 	logger.Info("The server has started up at :8080")
 	if err := routerBuilder.GetEngine().Run(":8080"); err != nil {

@@ -74,7 +74,6 @@ func (u *UserHandler) GetByUUID(c *gin.Context) {
 	c.JSON(http.StatusOK, user)
 }
 
-// TODO: проверить как работает
 func (u *UserHandler) GetAllUsers(c *gin.Context) {
 	users, err := u.UserRepository.GetAll()
 	if err != nil {
