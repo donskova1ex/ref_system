@@ -1,9 +1,10 @@
 package router
 
 import (
-	"github.com/gin-gonic/gin"
 	"ref_system/internal/handlers"
 	"ref_system/internal/repository"
+
+	"github.com/gin-gonic/gin"
 )
 
 const ()
